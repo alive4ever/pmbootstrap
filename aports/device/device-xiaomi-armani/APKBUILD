@@ -7,7 +7,7 @@ url="https://postmarketos.org"
 license="MIT"
 arch="noarch"
 options="!check"
-depends="linux-xiaomi-armani mkbootimg mesa-dri-swrast"
+depends="linux-xiaomi-armani mkbootimg mesa-dri-swrast msm-fb-refresher"
 makedepends="devicepkg-dev"
 source="deviceinfo"
 
@@ -19,5 +19,4 @@ package() {
 	devicepkg_package $startdir $pkgname
 }
 
-sha512sums="(run 'pmbootstrap checksum device-xiaomi-armani' to fill)"
-
+sha512sums="f4fe4773bbfe4da46bf5aeedb49f67780cbeb7926476b6b29041b13f13f3102ddb7b13c3a24baae7a328686ab3195d5ea1f0cd0bdcb73e47d103edf5f51e0101  deviceinfo"
