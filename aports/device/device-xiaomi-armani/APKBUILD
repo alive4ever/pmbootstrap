@@ -9,7 +9,8 @@ arch="noarch"
 options="!check"
 depends="linux-xiaomi-armani mkbootimg mesa-dri-swrast msm-fb-refresher"
 makedepends="devicepkg-dev"
-source="deviceinfo"
+source="deviceinfo
+	90-touchscreen.rules"
 
 build() {
 	devicepkg_build $startdir $pkgname
@@ -17,6 +18,8 @@ build() {
 
 package() {
 	devicepkg_package $startdir $pkgname
+	install -Dm644 "$srcdir"/90-touchscreen.rules "$pkgdir"/etc/udev/rules.d/90-touchscreen.rules
 }
 
-sha512sums="f4fe4773bbfe4da46bf5aeedb49f67780cbeb7926476b6b29041b13f13f3102ddb7b13c3a24baae7a328686ab3195d5ea1f0cd0bdcb73e47d103edf5f51e0101  deviceinfo"
+sha512sums="2054013208b97b60b0623a13401a697a18f0c3ab5f0cf316e7f23d742a6923b9ce947c5122062f70f3a0ee07d79a0762d8f2b564d31f7d7b63132adcb340c999  deviceinfo
+abf694ebe949025268630457ad14ae69f6a33c151236c1a193da32c27f836591e932517f011f6eb7ce750ab74d2f1e9a70724fed7150210d4da1b80a6e86a801  90-touchscreen.rules"
