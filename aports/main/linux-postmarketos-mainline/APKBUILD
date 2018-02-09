@@ -45,47 +45,27 @@ HOSTCC="${HOSTCC#${CROSS_COMPILE}}"
 
 ksrcdir="$srcdir/linux-$_basever"
 
-fetch() {
-	if [ -z "$PMB_LOCAL_SRC" ]; then
-		default_fetch
-	else
-		mkdir -p "$srcdir"
-		ln -svf "$startdir/$_config" "$srcdir/$_config"
-	fi
-}
-
-unpack() {
-	if [ -z "$PMB_LOCAL_SRC" ]; then
-		default_unpack
-	else
-		msg "Using local kernel sources: $PMB_LOCAL_SRC"
-		ln -sv "$PMB_LOCAL_SRC" "$ksrcdir"
-	fi
-}
-
 prepare() {
-	if [ -z "$PMB_LOCAL_SRC" ]; then
-		local _patch_failed=
-		cd "$ksrcdir"
-		# first apply patches in specified order
-		for i in $source; do
-			case $i in
-			*.patch|*.patch::*)
-				_patch=${i%::*}
-				msg "Applying $_patch..."
-				if ! patch -s -p1 -N -i "$srcdir"/$_patch; then
-					echo $_patch >>failed
-					_patch_failed=1
-				fi
-				;;
-			esac
-		done
+	local _patch_failed=
+	cd "$ksrcdir"
+	# first apply patches in specified order
+	for i in $source; do
+		case $i in
+		*.patch|*.patch::*)
+			_patch=${i%::*}
+			msg "Applying $_patch..."
+			if ! patch -s -p1 -N -i "$srcdir"/$_patch; then
+				echo $_patch >>failed
+				_patch_failed=1
+			fi
+			;;
+		esac
+	done
 
-		if ! [ -z "$_patch_failed" ]; then
-			error "The following patches failed:"
-			cat failed
-			return 1
-		fi
+	if ! [ -z "$_patch_failed" ]; then
+		error "The following patches failed:"
+		cat failed
+		return 1
 	fi
 
 	mkdir -p "$srcdir"/build
@@ -112,11 +92,6 @@ build() {
 }
 
 package() {
-	if ! [ -z "$PMB_LOCAL_SRC" ]; then
-		pkgdesc="LOCAL KERNEL SOURCE USED"
-		msg "Set pkgdesc to: $pkgdesc"
-	fi
-
 	cd "$srcdir/build/arch/${_carch}/boot"
 
 	if [ "$CARCH" == "aarch64" ]; then
