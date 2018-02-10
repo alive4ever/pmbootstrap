@@ -121,7 +121,7 @@ def build(args):
             _build_device_depends_note(args, package)
 
     # Set src and force
-    src = os.path.expanduser(args.src[0]) if args.src else None
+    src = os.path.realpath(os.path.expanduser(args.src[0])) if args.src else None
     force = True if src else args.force
     if src and not os.path.exists(src):
         raise RuntimeError("Invalid path specified for --src: " + src)

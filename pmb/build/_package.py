@@ -259,12 +259,15 @@ def override_source(args, apkbuild, pkgver, src, suffix="native"):
     if os.path.exists(append_path_outside):
         pmb.chroot.root(args, ["rm", append_path])
 
+    # Add src path to pkgdesc, cut it off after max length
+    pkgdesc = ("[" + src + "] " + apkbuild["pkgdesc"])[:127]
+
     # Appended content
     append = """
              # ** Overrides below appended by pmbootstrap for --src **
 
              pkgver=\"""" + pkgver + """\"
-             pkgdesc="[""" + src + """] $pkgdesc"
+             pkgdesc=\"""" + pkgdesc + """\"
              _pmb_src_copy="/tmp/pmbootstrap-local-source-copy"
 
              # Empty $source avoids patching in prepare()
@@ -275,8 +278,8 @@ def override_source(args, apkbuild, pkgver, src, suffix="native"):
              fetch() {
                  # Update source copy
                  msg "Copying source from host system: """ + src + """\"
-                 rsync -a --exclude=".git/" --delete \\
-                     \"""" + mount_path + """\" "$_pmb_src_copy"
+                 rsync -a --exclude=".git/" --delete --ignore-errors --force \\
+                     \"""" + mount_path + """\" "$_pmb_src_copy" || true
 
                  # Link local source files (e.g. kernel config)
                  mkdir "$srcdir"
@@ -284,7 +287,6 @@ def override_source(args, apkbuild, pkgver, src, suffix="native"):
                  for s in $_pmb_source_original; do
                      is_remote "$s" || ln -sf "$startdir/$s" "$srcdir/"
                  done
-
              }
 
              unpack() {

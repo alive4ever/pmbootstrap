@@ -337,18 +337,31 @@ def test_build_local_source_high_level(args, tmpdir):
     folder as local source folder, so pmbootstrap should take the source files
     from there and the build should succeed.
     """
-    # Create aports folder with deviceinfo (required by pmbootstrap to start)
+    # aports: Add deviceinfo (required by pmbootstrap to start)
     tmpdir = str(tmpdir)
-    aport = tmpdir + "/device/device-" + args.device
+    aports = tmpdir + "/aports"
+    aport = aports + "/device/device-" + args.device
     os.makedirs(aport)
     shutil.copy(args.aports + "/device/device-" + args.device + "/deviceinfo",
                 aport)
 
-    # Add modified hello-world aport (source="", uses $builddir)
-    aport = tmpdir + "/main/hello-world"
+    # aports: Add modified hello-world aport (source="", uses $builddir)
+    aport = aports + "/main/hello-world"
     os.makedirs(aport)
     shutil.copy(pmb.config.pmb_src + "/test/testdata/build_local_src/APKBUILD",
                 aport)
+
+    # src: Copy hello-world source files
+    src = tmpdir + "/src"
+    os.makedirs(src)
+    shutil.copy(args.aports + "/main/hello-world/Makefile", src)
+    shutil.copy(args.aports + "/main/hello-world/main.c", src)
+
+    # src: Create unreadable file (rsync should skip it)
+    unreadable = src + "/_unreadable_file"
+    shutil.copy(args.aports + "/main/hello-world/main.c", unreadable)
+    pmb.helpers.run.root(args, ["chown", "root:root", unreadable])
+    pmb.helpers.run.root(args, ["chmod", "500", unreadable])
 
     # Delete all hello-world --src packages
     pattern = (args.work + "/packages/" + args.arch_native +
@@ -358,15 +371,15 @@ def test_build_local_source_high_level(args, tmpdir):
     assert len(glob.glob(pattern)) == 0
 
     # Build hello-world --src package
-    src = args.aports + "/main/hello-world"
     pmb.helpers.run.user(args, [pmb.config.pmb_src + "/pmbootstrap.py",
-                                "--aports", tmpdir, "build", "--src", src,
+                                "--aports", aports, "build", "--src", src,
                                 "hello-world"])
 
     # Verify that the package has been built
     paths = glob.glob(pattern)
     assert len(paths) == 1
 
-    # Clean up: delete package, update index
+    # Clean up: delete package and tempfolder, update index
     pmb.helpers.run.root(args, ["rm", paths[0]])
     pmb.build.index_repo(args, args.arch_native)
+    pmb.helpers.run.root(args, ["rm", "-r", tmpdir])
