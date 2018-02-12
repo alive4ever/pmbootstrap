@@ -7,7 +7,7 @@ url="https://postmarketos.org"
 license="MIT"
 arch="noarch"
 options="!check"
-depends="linux-lg-bullhead mkbootimg mesa-dri-swrast"
+depends="linux-lg-bullhead mkbootimg mesa-dri-swrast libsparse"
 makedepends="devicepkg-dev"
 source="deviceinfo"
 
@@ -19,4 +19,4 @@ package() {
 	devicepkg_package $startdir $pkgname
 }
 
-sha512sums="6343f05f97ce786fdb8f514f0098a4bbb130452cc3f77778a22c7ddada0cc595459e5e226f1bd0138313d66dd502b8a30126f29597566cad9aa0feb856c8697d  deviceinfo"
+sha512sums="3e480bc64c2b7eb32255b3ece133a91e224639cabede560021660fbe0e6accb3d7504c761fc804d848b477ccf2f9b8fc1a5c6ec8615e4c44b788f49e1e44af0e  deviceinfo"
