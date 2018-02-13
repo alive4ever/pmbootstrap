@@ -11,7 +11,6 @@ subpackages=""
 install="$pkgname.post-install"
 source="
 	$install
-	i3wm.conf
 	lock.sh
 "
 options="!check"
@@ -19,9 +18,6 @@ options="!check"
 package() {
 	install -D -m644 "$srcdir"/lock.sh \
 		"$pkgdir"/usr/bin/lock.sh
-	install -D -m644 "$srcdir"/i3wm.conf \
-		"$pkgdir"/etc/skel/.config/i3/config
 }
 sha512sums="f1556fa83ddecf453333d784004c28d6bd9b7cf4c5ee2c0d31d51e67f5e1fa9949a6dd4377793eeb72e619add0689208fdd497924ebefa778c349a26e57ad30a  postmarketos-ui-i3wm.post-install
-b0decaee1fc5ac76ad8f11e936420d6fa83f3005493c513a680f467a5e9b2a9e1a9eabbe0ed6c02add6088fa3304023b1ce8cbded1d4ac17a5cb58ea7acbdac9  i3wm.conf
 ae41416dc56751825a87024dfe145afcba80a1aba5152280f199dfb3f289626fc8ec6ad38d0f25b7b5e5e74edde1d560e01c71251040d195da47214c4068c702  lock.sh"
