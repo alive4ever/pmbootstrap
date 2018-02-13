@@ -1,7 +1,7 @@
 pkgname=postmarketos-ui-i3wm
 pkgver=0.1
 pkgrel=0
-pkgdesc="(X11) Tiling X11 WM (keyboard required)"
+pkgdesc="(X11) Tiling WM (keyboard required)"
 url="https://i3wm.org"
 arch="noarch"
 license="GPL3"
