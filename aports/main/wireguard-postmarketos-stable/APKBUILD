@@ -1,12 +1,10 @@
 _flavor=postmarketos-stable
 _kpkg=linux-$_flavor
 _kver=4.14.9
-_kpkgrel=0
 
 # when changing _ver we *must* bump _mypkgrel
 # we must also match up _toolsrel with wireguard-tools
 _ver=0.0.20180202
-_mypkgrel=0
 _toolsrel=0
 _name=wireguard
 
@@ -21,11 +19,11 @@ fi
 
 _kpkgver="$_kver-r$_kpkgrel"
 _toolsver="$_ver-r$toolsrel"
-_abi_release=${_kver}-${_kpkgrel}-${_flavor}
+_abi_release=${_kver}
 
 pkgname=wireguard-${_flavor}
 pkgver=4.14.9
-pkgrel=$(($_kpkgrel + $_mypkgrel))
+pkgrel=0
 pkgdesc="Next generation secure network tunnel: kernel modules for $_flavor"
 arch=all
 url='https://www.wireguard.com'
