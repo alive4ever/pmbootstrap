@@ -2,20 +2,10 @@ _flavor=postmarketos-stable
 _kpkg=linux-$_flavor
 _kver=4.14.9
 
-# when changing _ver we *must* bump _mypkgrel
-# we must also match up _toolsrel with wireguard-tools
+# we must match up _toolsrel with wireguard-tools
 _ver=0.0.20180202
 _toolsrel=0
 _name=wireguard
-
-# verify the kernel version before entering chroot
-_kapkbuild=../../linux-${_flavor}/APKBUILD
-if [ -f $_kapkbuild ]; then
-	. $_kapkbuild
-	pkgname=$_name-$_flavor
-	[ "$_kver" != "$pkgver" ] && die "please update _kver to $pkgver"
-	[ "$_kpkgrel" != "$pkgrel" ] && die "please update _kpkgrel to $pkgrel"
-fi
 
 _kpkgver="$_kver-r$_kpkgrel"
 _toolsver="$_ver-r$toolsrel"
@@ -30,7 +20,7 @@ url='https://www.wireguard.com'
 license="GPL-2.0"
 depends="linux-postmarketos-stable"
 makedepends="linux-postmarketos-stable-dev libmnl-dev"
-install_if="wireguard-tools=$_toolsver linux-vanilla=$_kpkgver"
+install_if="wireguard-tools=$_toolsver linux-postmarketos-stable=$_kpkgver"
 options="!check"
 source="https://git.zx2c4.com/WireGuard/snapshot/WireGuard-$_ver.tar.xz"
 builddir="$srcdir"/WireGuard-$_ver
