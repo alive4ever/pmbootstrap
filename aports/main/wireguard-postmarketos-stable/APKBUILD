@@ -5,7 +5,6 @@ _kver=4.14.9
 # we must match up _toolsrel with wireguard-tools
 _ver=0.0.20180202
 _toolsrel=0
-_name=wireguard
 
 _kpkgver="$_kver-r$_kpkgrel"
 _toolsver="$_ver-r$toolsrel"
@@ -19,7 +18,7 @@ arch=all
 url='https://www.wireguard.com'
 license="GPL-2.0"
 depends="linux-postmarketos-stable"
-makedepends="linux-postmarketos-stable-dev libmnl-dev"
+makedepends="linux-postmarketos-stable-dev libmnl-dev libelf-dev elfutils-libelf"
 install_if="wireguard-tools=$_toolsver linux-postmarketos-stable=$_kpkgver"
 options="!check"
 source="https://git.zx2c4.com/WireGuard/snapshot/WireGuard-$_ver.tar.xz"
