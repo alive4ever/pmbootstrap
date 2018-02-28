@@ -207,7 +207,6 @@ def arguments():
     sub.add_parser("shutdown", help="umount, unregister binfmt")
     sub.add_parser("index", help="re-index all repositories with custom built"
                    " packages (do this after manually removing package files)")
-    sub.add_parser("update", help="update all APKINDEX files")
     arguments_export(sub)
     arguments_flasher(sub)
     arguments_initfs(sub)
@@ -243,9 +242,12 @@ def arguments():
     zap.add_argument("-d", "--distfiles", action="store_true", help="also delete"
                      " downloaded files cache")
 
-    # Action: stats
+    # Action: stats, update
     stats = sub.add_parser("stats", help="show ccache stats")
-    stats.add_argument("--arch", default=arch_native, choices=arch_choices)
+    update = sub.add_parser("update", help="update all APKINDEX files")
+    for action in [stats, update]:
+        action.add_argument("--arch", default=arch_native,
+                            choices=arch_choices)
 
     # Action: build_init / chroot
     build_init = sub.add_parser("build_init", help="initialize build"

@@ -57,7 +57,7 @@ def get_apkbuild(args, pkgname, arch):
     :returns: None or full path to APKBUILD
     """
     # Get existing binary package indexes
-    pmb.helpers.repo.update(args)
+    pmb.helpers.repo.update(args, arch)
 
     # Get aport, skip upstream only packages
     aport = pmb.build.find_aport(args, pkgname, False)

@@ -207,7 +207,7 @@ def menuconfig(args):
 
 
 def update(args):
-    pmb.helpers.repo.update(args, True)
+    pmb.helpers.repo.update(args, args.arch, True)
 
 
 def newapkbuild(args):

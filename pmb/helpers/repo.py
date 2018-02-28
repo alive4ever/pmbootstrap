@@ -106,13 +106,16 @@ def apkindex_files(args, arch=None):
     return ret
 
 
-def update(args, force=False):
+def update(args, arch=None, force=False):
     """
-    Download the APKINDEX files for all URLs and architectures.
+    Download the APKINDEX files for all URLs depending on the architectures.
+
+    :arg arch: Alpine architecture name (x86_64, armhf, ...) or None to default
+               to all arches.
     :arg force: even update when the APKINDEX file is fairly recent
     """
 
-    architectures = pmb.config.build_device_architectures
+    architectures = [arch] if arch else pmb.config.build_device_architectures
     retention_hours = pmb.config.apkindex_retention_time
     retention_seconds = retention_hours * 3600
 
@@ -140,7 +143,8 @@ def update(args, force=False):
         return
 
     # Show one message only
-    logging.info("Update package index (" + str(len(outdated)) + "x)")
+    logging.info("Update package index for " + ", ".join(architectures) +
+                 " (" + str(len(outdated)) + " file(s))")
     for url, target in outdated.items():
         # Download and move to right location
         temp = pmb.helpers.http.download(args, url, "APKINDEX", False,
