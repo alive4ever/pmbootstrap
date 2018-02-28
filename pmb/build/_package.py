@@ -214,7 +214,8 @@ def get_gcc_version(args, arch):
     <https://linux.die.net/man/1/ccache>
     :returns: a string like "6.4.0-r5"
     """
-    return pmb.parse.apkindex.package(args, "gcc", arch)["version"]
+    return pmb.parse.apkindex.package(args, "gcc-"+arch,
+                                      args.arch_native)["version"]
 
 
 def get_pkgver(original_pkgver, original_source=False, now=None):
