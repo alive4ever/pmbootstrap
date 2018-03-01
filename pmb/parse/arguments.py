@@ -242,12 +242,18 @@ def arguments():
     zap.add_argument("-d", "--distfiles", action="store_true", help="also delete"
                      " downloaded files cache")
 
-    # Action: stats, update
+    # Action: stats
     stats = sub.add_parser("stats", help="show ccache stats")
-    update = sub.add_parser("update", help="update all APKINDEX files")
-    for action in [stats, update]:
-        action.add_argument("--arch", default=arch_native,
-                            choices=arch_choices)
+    stats.add_argument("--arch", default=arch_native, choices=arch_choices)
+
+    # Action: update
+    update = sub.add_parser("update", help="update all existing APKINDEX"
+                            " files")
+    update.add_argument("--arch", default=None, choices=arch_choices,
+                        help="only update a specific architecture")
+    update.add_argument("--non-existing", action="store_true", help="do not"
+                        " only update the existing APKINDEX files, but all of"
+                        " them", dest="non_existing")
 
     # Action: build_init / chroot
     build_init = sub.add_parser("build_init", help="initialize build"
