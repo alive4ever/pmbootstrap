@@ -36,6 +36,7 @@ write_unless_modified() {
 	echo 'LABEL="pmOS_root"	/	ext4	relatime,data=ordered	0	1'
 	echo 'LABEL="pmOS_boot"	/boot	auto	defaults		0	2'
 } | write_unless_modified /etc/fstab
+
 # Set /etc/issue
   {
 	echo 'Welcome to postmarketOS'
@@ -43,6 +44,7 @@ write_unless_modified() {
 	# setterm -powersave on -blank 5
 	echo -ne "\033[9;5]"
   } | write_unless_modified /etc/issue
+
 # Set /etc/motd
 {
 	echo 'Welcome to postmarketOS!'
@@ -57,11 +59,9 @@ write_unless_modified() {
 } | write_unless_modified /etc/motd
 
 # Change wpa_supplicant into dbus mode and enable both drivers
-if ! apk audit /etc | grep -q etc/conf.d/wpa_supplicant; then
-	{
-		echo 'wpa_supplicant_args="-u -Dwext,nl80211"'
-	} >>/etc/conf.d/wpa_supplicant
-fi
+{
+	echo 'wpa_supplicant_args="-u -Dwext,nl80211"'
+} | write_unless_modified /etc/conf.d/wpa_supplicant
 touch /etc/wpa_supplicant/wpa_supplicant.conf
 
 # Enable syslog to SHM. Note: size is 4048KiB, which *should* be More Than Enough(TM) for all but the most chattiest of devices.
