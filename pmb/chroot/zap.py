@@ -23,6 +23,7 @@ import os
 
 import pmb.chroot
 import pmb.helpers.run
+import pmb.parse.apkindex
 
 
 def zap(args, confirm=True, dry=False, packages=False, http=False,
@@ -103,15 +104,13 @@ def zap_mismatch_bins(args, confirm=True, dry=False):
 
     reindex = False
     for apkindex_path in glob.glob(args.work + "/packages/*/APKINDEX.tar.gz"):
-        apkindex = pmb.parse.apkindex.parse(args, apkindex_path, False)
-        for pkgname, bin_data in apkindex.items():
-            # Only real packages have apks, provided packages do not exist
-            # (e.g. "so:libtest.so.1.2")
-            if pkgname != bin_data["pkgname"]:
-                continue
-            origin = bin_data["origin"]
-            version = bin_data["version"]
-            arch = bin_data["arch"]
+        # Delete packages without same version in aports
+        blocks = pmb.parse.apkindex.parse_blocks(args, apkindex_path)
+        for block in blocks:
+            pkgname = block["pkgname"]
+            origin = block["origin"]
+            version = block["version"]
+            arch = block["arch"]
 
             # Apk path
             apk_path_short = arch + "/" + pkgname + "-" + version + ".apk"
