@@ -241,10 +241,10 @@ def ask_for_build_options(args, cfg):
     cfg["pmbootstrap"]["ccache_size"] = answer
 
 
-def ask_for_hostname(args):
+def ask_for_hostname(args, device):
     while True:
         ret = pmb.helpers.cli.ask(args, "Device hostname (short form, e.g. 'foo')",
-                                  None, args.device, True)
+                                  None, device, True)
         # http://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
         # check length
         if len(ret) > 63:
@@ -304,7 +304,7 @@ def frontend(args):
     cfg["pmbootstrap"]["timezone"] = ask_for_timezone(args)
 
     # Hostname
-    cfg["pmbootstrap"]["hostname"] = ask_for_hostname(args)
+    cfg["pmbootstrap"]["hostname"] = ask_for_hostname(args, device)
 
     # Save config
     pmb.config.save(args, cfg)
