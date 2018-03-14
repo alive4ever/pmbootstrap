@@ -18,7 +18,9 @@ along with pmbootstrap.  If not, see <http://www.gnu.org/licenses/>.
 """
 import logging
 import os
+import re
 import glob
+import shlex
 
 import pmb.chroot
 import pmb.chroot.apk
@@ -236,11 +238,19 @@ def setup_keymap(args):
 
 def setup_hostname(args):
     """
-    Set the hostname and update localhost address on /etc/hosts
+    Set the hostname and update localhost address in /etc/hosts
     """
+    # Default to device name
+    hostname = args.hostname
+    if not hostname:
+        hostname = args.device
+
+    # Update /etc/hosts
     suffix = "rootfs_" + args.device
-    pmb.chroot.root(args, ["sh", "-c", "echo '" + args.hostname + "' > /etc/hostname"], suffix)
-    regex = "s/^127\.0\.0\.1.*/127.0.0.1\t" + args.hostname + " localhost.localdomain localhost/"
+    pmb.chroot.root(args, ["sh", "-c", "echo " + shlex.quote(hostname) +
+                    " > /etc/hostname"], suffix)
+    regex = ("s/^127\.0\.0\.1.*/127.0.0.1\t" + re.escape(hostname) +
+             " localhost.localdomain localhost/")
     pmb.chroot.root(args, ["sed", "-i", "-e", regex, "/etc/hosts"], suffix)
 
 

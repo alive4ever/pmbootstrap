@@ -246,19 +246,25 @@ def ask_for_hostname(args, device):
         ret = pmb.helpers.cli.ask(args, "Device hostname (short form, e.g. 'foo')",
                                   None, device, True)
         # http://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
-        # check length
+        # Check length
         if len(ret) > 63:
             logging.fatal("ERROR: Hostname '" + ret + "' is too long.")
             continue
-        # check that it only contains valid chars
+
+        # Check that it only contains valid chars
         if not re.match("^[0-9a-z-]*$", ret):
             logging.fatal("ERROR: Hostname must only contain letters (a-z),"
                           " digits (0-9) or minus signs (-)")
             continue
-        # check that doesn't begin or end with a minus sign
+
+        # Check that doesn't begin or end with a minus sign
         if ret[:1] == "-" or ret[-1:] == "-":
             logging.fatal("ERROR: Hostname must not begin or end with a minus sign")
             continue
+
+        # Don't store device name in user's config (gets replaced in install)
+        if ret == device:
+            return ""
         return ret
 
 
