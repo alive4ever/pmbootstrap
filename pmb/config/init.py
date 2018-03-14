@@ -244,7 +244,7 @@ def ask_for_build_options(args, cfg):
 def ask_for_hostname(args, device):
     while True:
         ret = pmb.helpers.cli.ask(args, "Device hostname (short form, e.g. 'foo')",
-                                  None, device, True)
+                                  None, (args.hostname or device), True)
         # http://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
         # Check length
         if len(ret) > 63:
