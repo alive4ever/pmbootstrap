@@ -114,6 +114,9 @@ get_binaries()
 	if [ -f /usr/sbin/fbdebug ]; then
 		BINARIES="${BINARIES} /usr/sbin/fbdebug"
 	fi
+	if [ -f /usr/bin/evtest ]; then
+		BINARIES="${BINARIES} /usr/bin/evtest"
+	fi
 	lddtree -l $BINARIES | sort -u
 }
 
