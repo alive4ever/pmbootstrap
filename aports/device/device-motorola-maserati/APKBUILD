@@ -17,5 +17,5 @@ package() {
 	install -Dm644 "$srcdir"/10-safestrap-maserati.sh \
 		"$pkgdir"/etc/postmarketos-mkinitfs/hooks/
 }
-sha512sums="0441de204d59ad69f5dc85eade1c8fa43e71b1e540a7b793bb1f10f50c14c1aab68e35599fca2d7af19064ca23c36ae57d64bc27bbb97b1d0ecab71e24f4fe30  deviceinfo
+sha512sums="7e83d44307330366c9d050395f439af2e46dff5b6eaa2bb3806f3b21630219e0b538271cea7fa41acfbc0ad12445e2b07217f4005eadc0ae74eb616ef9126d02  deviceinfo
 36e529d5ded647012bb46a3e03ea8916c5046bed628a4b72a0c057dd2de6410bd9a1d74fc01b862feff3a4cfe8b0b0df6bd69fdbb6e63406e97c1811be07f3b8  10-safestrap-maserati.sh"
