@@ -54,6 +54,9 @@ prepare() {
 	yes "" | make ARCH="$_carch" HOSTCC="$HOSTCC" oldconfig
 
 	cd "$_wlan_builddir"
+	mkdir -p .git/refs/tags
+	touch .git/HEAD .git/index .git/refs/tags
+	# sed -i 's~\.git/HEAD \.git/index \.git/refs/tags~~g' drivers/net/wireless/wl12xx/Makefile
 	sed -i "s/\$(shell git describe --dirty)/$_wlan_commit/g" drivers/net/wireless/wl12xx/Makefile
 }
 
