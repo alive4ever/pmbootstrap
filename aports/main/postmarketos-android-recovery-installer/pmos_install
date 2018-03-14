@@ -109,6 +109,7 @@ mount -t ext2 -rw "$PMOS_BOOT" /mnt/pmOS/boot || {
 }
 
 ui_print "Installing rootfs..."
+export EXTRACT_UNSAFE_SYMLINKS=1 # See issue #1333
 unzip -p pmos.zip rootfs.tar.gz | tar -xz -C /mnt/pmOS
 
 ui_print "Creating home folder..."
