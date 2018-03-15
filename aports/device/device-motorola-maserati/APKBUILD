@@ -6,7 +6,7 @@ url="https://postmarketos.org"
 license="MIT"
 arch="noarch"
 options="!check"
-depends="linux-motorola-maserati"
+depends="postmarketos-base linux-motorola-maserati"
 source="deviceinfo 10-safestrap-maserati.sh"
 
 package() {
