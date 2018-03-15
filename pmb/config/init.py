@@ -19,7 +19,6 @@ along with pmbootstrap.  If not, see <http://www.gnu.org/licenses/>.
 import logging
 import glob
 import os
-import re
 
 import pmb.config
 import pmb.helpers.cli
@@ -245,23 +244,8 @@ def ask_for_hostname(args, device):
     while True:
         ret = pmb.helpers.cli.ask(args, "Device hostname (short form, e.g. 'foo')",
                                   None, (args.hostname or device), True)
-        # http://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
-        # Check length
-        if len(ret) > 63:
-            logging.fatal("ERROR: Hostname '" + ret + "' is too long.")
+        if not pmb.helpers.other.validate_hostname(ret):
             continue
-
-        # Check that it only contains valid chars
-        if not re.match("^[0-9a-z-]*$", ret):
-            logging.fatal("ERROR: Hostname must only contain letters (a-z),"
-                          " digits (0-9) or minus signs (-)")
-            continue
-
-        # Check that doesn't begin or end with a minus sign
-        if ret[:1] == "-" or ret[-1:] == "-":
-            logging.fatal("ERROR: Hostname must not begin or end with a minus sign")
-            continue
-
         # Don't store device name in user's config (gets replaced in install)
         if ret == device:
             return ""

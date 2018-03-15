@@ -245,6 +245,10 @@ def setup_hostname(args):
     if not hostname:
         hostname = args.device
 
+    if not pmb.helpers.other.validate_hostname(hostname):
+        raise RuntimeError("Hostname '" + hostname + "' is not valid, please"
+                           " run 'pmbootstrap init' to configure it.")
+
     # Update /etc/hosts
     suffix = "rootfs_" + args.device
     pmb.chroot.root(args, ["sh", "-c", "echo " + shlex.quote(hostname) +
