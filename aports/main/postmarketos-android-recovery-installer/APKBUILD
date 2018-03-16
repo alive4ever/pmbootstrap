@@ -1,5 +1,5 @@
 pkgname=postmarketos-android-recovery-installer
-pkgver=0.1.5
+pkgver=0.1.6
 pkgrel=0
 pkgdesc="TWRP compatible postmarketOS installer script"
 url="https://github.com/postmarketOS"
